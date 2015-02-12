@@ -1,0 +1,20 @@
+.. Synth-golang documentation master file, created by Lucio M. Tato
+   
+Welcome to Synth-golang's documentation!
+========================================
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   include-readme
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

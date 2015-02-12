@@ -1,0 +1,1 @@
+Search.setIndex({envversion:42,terms:{index:0,search:0,sourc:1,sphinx:1,modul:0,content:0,document:1,page:0},objtypes:{},objnames:{},filenames:["index","include-readme"],titles:["Welcome to Synth-golang&#8217;s documentation!","synth-golang-docs"],objects:{},titleterms:{welcom:0,doc:1,tabl:0,indic:0,golang:[0,1],synth:[0,1],document:0}})
