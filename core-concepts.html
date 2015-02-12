@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Core Concepts &mdash; Synth-golang 0-alpha documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0-alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Synth-golang 0-alpha documentation" href="index.html" />
+    <link rel="next" title="Compiler" href="compiler.html" />
+    <link rel="prev" title="Welcome to Synth-golang (alpha)" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="compiler.html" title="Compiler"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Synth-golang (alpha)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Synth-golang 0-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="core-concepts">
+<h1>Core Concepts<a class="headerlink" href="#core-concepts" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="values">
+<h2>Values<a class="headerlink" href="#values" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">A value can be as small as a integer, or as large as a table with a million records.</p>
+</li>
+<li><p class="first">Values are created as the result of evaluating expressions.</p>
+</li>
+<li><p class="first">Every value has a <em>type</em> (a model for its storage).</p>
+</li>
+<li><p class="first">Values can be included as literals in the code, letting the compiler infer the type. e.g.:</p>
+<div class="highlight-go"><div class="highlight"><pre><span class="nx">let</span>
+   <span class="nx">a</span> <span class="p">=</span> <span class="mi">42</span>                <span class="c1">// inferred type: Integer</span>
+   <span class="nx">b</span> <span class="p">=</span> <span class="mf">42.2</span>              <span class="c1">// inferred type: Float64</span>
+   <span class="nx">c</span> <span class="p">=</span> <span class="nx">decimal</span> <span class="mf">42.2</span>      <span class="c1">// explicit type: Decimal</span>
+   <span class="nx">d</span> <span class="p">=</span> <span class="s">&quot;abc&quot;</span>             <span class="c1">// explicit type: String</span>
+   <span class="nx">e</span> <span class="p">=</span> <span class="nx">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span>  <span class="c1">// explicit type: List</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>Values are immutable by default</strong>. Functions can operate on values, but cannot modify the values they receive.</p>
+<p>For example the function <em>append</em> used to append elements to a list, will receive a list-value as parameter and will return a <em>new</em> list-value with the data appended.</p>
+<p><em>Lists</em> and other data structures, are implemented as <a class="reference external" href="http://en.wikipedia.org/wiki/Persistent_data_structure">Persistent Data Structures</a>. A <em>full memory duplication</em> is not required to achieve <em>logical immutable values</em>.</p>
+<p>Today Multi-core processors are the norm. To truly utilize all the power of a multi-core processor you need concurrent programming. By discouraging &#8220;mutation&#8221; or &#8220;change-in-place&#8221; of values, you eliminate data-races from concurrent programming. Immutable values are also safe to share between threads (safe because values are immutable). Simplifying concurrent programming is a huge gain even with the performance penalties of persistent data structures. See: <a class="reference external" href="http://www.gotw.ca/publications/concurrency-ddj.htm">http://www.gotw.ca/publications/concurrency-ddj.htm</a> (2005)</p>
+</div>
+<div class="section" id="storages">
+<h2>Storages<a class="headerlink" href="#storages" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>A <em>storage</em> is an arbitrarily sized area of memory where you can store a value.</li>
+<li>The shape of a <em>storage</em> is defined by its <em>type</em>. Normally, a storage for a single item occupies a small amount of memory while a storage for a large list, occupies a large amount of memory.</li>
+</ul>
+<div class="section" id="naming-storages">
+<h3>Naming Storages<a class="headerlink" href="#naming-storages" title="Permalink to this headline">¶</a></h3>
+<p>A &#8220;<strong>name</strong>&#8221; is a symbol, an <em>identifier</em> associated with a storage.</p>
+<ul class="simple">
+<li>Each <em>storage</em> has one and only one unique name.</li>
+<li>Two different <em>names</em> <strong>cannot refer to the same storage at the same time</strong>.</li>
+<li><strong>Each name owns its storage</strong></li>
+</ul>
+<p>You can create and name a <em>storage</em> with the core-command &#8220;<strong>let</strong>&#8221;. e.g.:</p>
+<div class="highlight-go"><div class="highlight"><pre><span class="nx">let</span> <span class="nx">answer</span> <span class="p">=</span> <span class="mi">42</span>         <span class="c1">// create a storage, type:Int, value: 42, named &quot;answer&quot;.</span>
+<span class="nx">let</span> <span class="nx">c</span> <span class="p">=</span> <span class="nx">decimal</span> <span class="mf">42.2</span>    <span class="c1">// create storage, type:Decimal, value: 42.2, named &quot;c&quot;.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="types">
+<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="atom-types">
+<h3>Atom Types<a class="headerlink" href="#atom-types" title="Permalink to this headline">¶</a></h3>
+<p><em>Atom</em> types hold values composed of <em>one single item</em>, normally treated as a unit, i.e:</p>
+<ul class="simple">
+<li>Byte or Int8 to Int64</li>
+<li>Uint8 to Uint64</li>
+<li>Int (architecture dependent, Int32 or Int64)</li>
+<li>Big-Integer (arbitrarily large signed integer)</li>
+<li>Decimal and Big-Decimal</li>
+<li>Float32 and Float64</li>
+<li>String</li>
+</ul>
+<p>As with all types, the type name is also the command to create a value of the type, e.g.:</p>
+<div class="highlight-go"><div class="highlight"><pre><span class="nx">let</span>
+  <span class="nx">a</span> <span class="p">=</span> <span class="nx">Int64</span> <span class="mi">42</span>        <span class="c1">// type: Int64, value: 42</span>
+  <span class="nx">b</span> <span class="p">=</span> <span class="nx">Float64</span> <span class="mi">1234</span>    <span class="c1">// type: Float64, value: 1234.0</span>
+  <span class="nx">c</span> <span class="p">=</span> <span class="nx">Big</span><span class="o">-</span><span class="nx">Decimal</span> <span class="mf">1e6</span> <span class="c1">// type: Big-Decimal, value: 1 million</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="list-type">
+<h3>List Type<a class="headerlink" href="#list-type" title="Permalink to this headline">¶</a></h3>
+<p>A List is a type of value, where the value is composed of <em>a sequence of items</em> (zero or more), where each &#8220;item&#8221; in the sequence can be a value of any type, i.e.: each item can be an <em>Atom</em>, a <em>Structure</em> or <em>another List</em>.</p>
+<p><em>List</em> constructor syntax is:</p>
+<div class="syntax container">
+list Value...</div>
+<p>e.g.:</p>
+<div class="highlight-go"><div class="highlight"><pre><span class="nx">let</span> <span class="nx">xs</span> <span class="p">=</span> <span class="nx">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="nx">let</span> <span class="nx">mixed</span><span class="o">-</span><span class="nx">list</span> <span class="p">=</span> <span class="nx">list</span> <span class="s">&quot;abc&quot;</span> <span class="mf">20.5</span> <span class="mi">1</span>
+<span class="nx">let</span> <span class="nx">recursive</span><span class="o">-</span><span class="nx">list</span> <span class="p">=</span> <span class="nx">list</span> <span class="s">&quot;abc&quot;</span> <span class="mi">1</span> <span class="mi">2</span> <span class="p">(</span><span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="p">(</span><span class="s">&quot;J&quot;</span> <span class="s">&quot;K&quot;</span> <span class="s">&quot;L&quot;</span><span class="p">)</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span><span class="p">)</span>
+<span class="nx">let</span> <span class="nx">discounts</span> <span class="p">=</span> <span class="nx">list</span>
+            <span class="nx">discount</span> <span class="mi">10</span> <span class="s">&quot;PROMO&quot;</span>
+            <span class="nx">discount</span> <span class="mi">20</span> <span class="s">&quot;VIP&quot;</span>
+</pre></div>
+</div>
+<p>You can handle list items by using <em>first</em> and <em>rest</em> (a.k.a. <em>car</em> and <em>cdr</em>). You can process the table sequentially or concurrently using <em>for-each</em>, <em>map</em>, <em>filter</em>, etc. &#8220;List&#8221; implements the <em>Sequence-Interface</em>, the basic interface to handle sequences of items.</p>
+<p>In a <em>List</em>, an item can be <em>another List</em>. <strong>A List is a</strong> <a class="reference external" href="https://en.wikipedia.org/wiki/Recursive_data_type">Recursive Data Type</a>.</p>
+</div>
+<div class="section" id="structure-type">
+<h3>Structure Type<a class="headerlink" href="#structure-type" title="Permalink to this headline">¶</a></h3>
+<p>A <em>structure</em> is a type of value, where the value is composed of a <strong>fixed number of fields</strong>, each field of any type. You can use dot-access (a dot) to access fields within the structure.</p>
+<p>To declare a structure type, the syntax is:</p>
+<div class="syntax container">
+struct Name (field field-Name &#8221;:&#8221; Type)...</div>
+<p>When you declare a structure, as with all types, the struct name is also the command used to construct a value of the structure type, e.g.:</p>
+<div class="highlight-go"><div class="highlight"><pre><span class="kd">struct</span> <span class="nx">discount</span>
+    <span class="nx">field</span> <span class="nx">pct</span><span class="p">:</span> <span class="nx">decimal</span>
+    <span class="nx">field</span> <span class="nx">code</span><span class="p">:</span> <span class="kt">string</span>
+
+<span class="nx">let</span> <span class="nx">d</span> <span class="p">=</span> <span class="nx">discount</span> <span class="mi">10</span> <span class="s">&quot;PROMO&quot;</span>
+
+<span class="nx">print</span> <span class="nx">d</span><span class="p">.</span><span class="nx">pct</span>  <span class="c1">//dot-access</span>
+<span class="p">=&gt;</span> <span class="mi">10</span>
+
+<span class="nx">print</span> <span class="nx">d</span>
+<span class="p">=&gt;</span> <span class="p">(</span><span class="nx">discount</span> <span class="mi">10</span> <span class="s">&quot;PROMO&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In a <em>Structure</em>, a field can be <em>another structure</em> or a <em>list</em>. The <em>Structure</em> is also a <a class="reference external" href="https://en.wikipedia.org/wiki/Recursive_data_type">Recursive Data Type</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Core Concepts</a><ul>
+<li><a class="reference internal" href="#values">Values</a></li>
+<li><a class="reference internal" href="#storages">Storages</a><ul>
+<li><a class="reference internal" href="#naming-storages">Naming Storages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#types">Types</a><ul>
+<li><a class="reference internal" href="#atom-types">Atom Types</a></li>
+<li><a class="reference internal" href="#list-type">List Type</a></li>
+<li><a class="reference internal" href="#structure-type">Structure Type</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Synth-golang (alpha)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="compiler.html"
+                        title="next chapter">Compiler</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/core-concepts.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="compiler.html" title="Compiler"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Synth-golang (alpha)"
+             >previous</a> |</li>
+        <li><a href="index.html">Synth-golang 0-alpha documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Lucio M. Tato.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

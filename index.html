@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -6,10 +8,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to Synth-golang’s documentation! &mdash; Synth-golang 0-alpha documentation</title>
+    <title>Welcome to Synth-golang (alpha) &mdash; Synth-golang 0-alpha documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -24,7 +27,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Synth-golang 0-alpha documentation" href="#" />
-    <link rel="next" title="synth-golang-docs" href="include-readme.html" /> 
+    <link rel="next" title="Core Concepts" href="core-concepts.html" /> 
   </head>
   <body>
     <div class="related">
@@ -34,7 +37,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="include-readme.html" title="synth-golang-docs"
+          <a href="core-concepts.html" title="Core Concepts"
              accesskey="N">next</a> |</li>
         <li><a href="#">Synth-golang 0-alpha documentation</a> &raquo;</li> 
       </ul>
@@ -45,13 +48,50 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-synth-golang-s-documentation">
-<h1>Welcome to Synth-golang&#8217;s documentation!<a class="headerlink" href="#welcome-to-synth-golang-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Contents:</p>
+  <div class="section" id="welcome-to-synth-golang-alpha">
+<h1>Welcome to Synth-golang (alpha)<a class="headerlink" href="#welcome-to-synth-golang-alpha" title="Permalink to this headline">¶</a></h1>
+<p>Synth-golang is an experimental transpiler (currently Version 0.0.0-ALPHA)</p>
+<p>Synth-golang takes some inspiration from Clojure and Python.</p>
+<p>The objective is to provide higher-level features within the golang ecosystem
+as Clojure does for Java.</p>
+<p>Synth-golang <em>will</em> provide: (once leaving alpha-status)</p>
+<blockquote class="pull-quote">
+<div><ul class="simple">
+<li>Immutable values by default (as Clojure)</li>
+<li>Python-like code structure (using indentation)</li>
+<li>Macros (Lisp-like power macros)</li>
+<li>Generic Programming</li>
+</ul>
+</div></blockquote>
+<p>while relaying on: golang&#8217;s simplicity, powerfull concurrency primitives, golang&#8217;s own
+concepts as &#8220;structs&#8221; and &#8220;interface&#8221;, golang&#8217;s packages and libraries.</p>
+<div class="section" id="readability">
+<h2>Readability<a class="headerlink" href="#readability" title="Permalink to this headline">¶</a></h2>
+<blockquote class="epigraph">
+<div><p>When you program, you spend more time reading code than writing it.</p>
+<p class="attribution">&mdash;Paul Graham, The Python Paradox</p>
+</div></blockquote>
+<p>Synth language philosophy <strong>emphasizes code readability</strong>.
+Design trade-offs are always solved favoring readability.</p>
+<p>Synth-golang has:</p>
+<ul class="simple">
+<li>Consistent syntax</li>
+<li>Clean visual layout, using indentation to delimit blocks (as Python)</li>
+</ul>
+</div>
+<div class="section" id="contents">
+<h2>Contents:<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="include-readme.html">synth-golang-docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core-concepts.html">Core Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core-concepts.html#values">Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core-concepts.html#storages">Storages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core-concepts.html#types">Types</a></li>
 </ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Compiler</a></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -71,13 +111,17 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to Synth-golang&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#">Welcome to Synth-golang (alpha)</a><ul>
+<li><a class="reference internal" href="#readability">Readability</a></li>
+<li><a class="reference internal" href="#contents">Contents:</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="include-readme.html"
-                        title="next chapter">synth-golang-docs</a></p>
+  <p class="topless"><a href="core-concepts.html"
+                        title="next chapter">Core Concepts</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/index.txt"
@@ -107,7 +151,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="include-readme.html" title="synth-golang-docs"
+          <a href="core-concepts.html" title="Core Concepts"
              >next</a> |</li>
         <li><a href="#">Synth-golang 0-alpha documentation</a> &raquo;</li> 
       </ul>
