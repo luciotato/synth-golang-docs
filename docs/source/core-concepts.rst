@@ -4,7 +4,7 @@ Core Concepts
 Values 
 ------
 
-* A value can be as small as a integer, or as large as a table with a million records.
+* A value can be as small as a 32-bit integer, or as large as a table with a million records.
 
 * Values are created as the result of evaluating expressions.
 
@@ -13,7 +13,7 @@ Values
 * Values can be included as literals in the code, letting the compiler infer the type. e.g.::
 
 	  let
-	     a = 42                // inferred type: Integer
+	     a = 42                // inferred type: Int
 	     b = 42.2              // inferred type: Float64
 	     c = decimal 42.2      // explicit type: Decimal
 	     d = "abc"             // explicit type: String
@@ -58,9 +58,9 @@ Atom Types
 
 *Atom* types hold values composed of *one single item*, normally treated as a unit, i.e:
 
-* Byte or Int8 to Int64 
-* Uint8 to Uint64 
+* Int8 to Int64 
 * Int (architecture dependent, Int32 or Int64) 
+* Byte|Uint8 to Uint64 
 * Big-Integer (arbitrarily large signed integer)
 * Decimal and Big-Decimal
 * Float32 and Float64
